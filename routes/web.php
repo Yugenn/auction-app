@@ -19,3 +19,5 @@ Route::get('/', function () {
 
 Route::resource('items',
     App\Http\Controllers\ItemController::class);
+
+Route::get('/', 'App\Http\Controllers\ItemController@index');
