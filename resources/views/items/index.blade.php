@@ -15,5 +15,6 @@
         </a>
         @endforeach
     </ul>
+    <a href="/item/create">出品する</a>
 </body>
 </html>
