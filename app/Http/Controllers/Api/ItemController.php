@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Item;
 use App\Http\Requests\ItemRequest;
+
 class ItemController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $items = Item::all();
-        return view('items.index',['items' => $items]);
+        return $items;
     }
 
-    public function show($id)
-    {
-        $item = Item::find($id);
-        return view('items.show', ['item' => $item]);
-    }
-
-
-    public function create()
-    {
-        return view('items.create');
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(ItemRequest $request)
     {
         // インスタンスの作成
@@ -41,21 +41,33 @@ class ItemController extends Controller
         // インスタンスに値を設定して保存
         $item->save();
 
-        // 登録したらindexに戻る
-        return redirect('/items');
+        return $item;
     }
 
-    public function edit($id) 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
+                // Itemモデルから1件を取得
         $item = Item::find($id);
-        return view('items.edit', ['item' => $item]);
+        return $item;
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(ItemRequest $request, $id)
     {
-        // 元のデータを取得
+                 // ここはidで探して持ってくる以外はstoreと同じ
         $item = Item::find($id);
-
         // 値の用意
         $item->name = $request->name;
         $item->description = $request->description;
@@ -63,21 +75,20 @@ class ItemController extends Controller
         $item->seller = $request->seller;
         $item->email = $request->email;
         $item->image_url = $request->image_url;
-
-        // インスタンスに値を設定して保存
+        // 保存
         $item->save();
-
-        // 登録したらindexに戻る
-        return redirect('/items');
+        // 更新後のデータを返す
+        return $item;
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $item = Item::find($id);
-        $item->delete;
-
-        return redirect('/items');
+        //
     }
-
 }
-
